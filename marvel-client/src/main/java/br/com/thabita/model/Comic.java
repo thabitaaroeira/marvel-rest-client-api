@@ -2,17 +2,12 @@ package br.com.thabita.model;
 
 import java.util.List;
 
-import br.com.thabita.model.util.BaseResource;
-import lombok.Getter;
-import lombok.Setter;
+import br.com.thabita.model.util.BaseEntidade;
 
 /**
  * Comic resource representation.
  */
-@Getter
-@Setter
-@SuppressWarnings("unused")
-public class Comic extends BaseResource {
+public class Comic extends BaseEntidade {
 
 	/**
 	 * The ID of the digital comic representation of this comic. Will be 0 if
@@ -88,5 +83,117 @@ public class Comic extends BaseResource {
 	 * A resource list containing the characters which appear in this comic.
 	 */
 	private List<Character> characters;
+
+	public Integer getDigitalId() {
+		return digitalId;
+	}
+
+	public void setDigitalId(Integer digitalId) {
+		this.digitalId = digitalId;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Double getIssueNumber() {
+		return issueNumber;
+	}
+
+	public void setIssueNumber(Double issueNumber) {
+		this.issueNumber = issueNumber;
+	}
+
+	public String getVariantDescription() {
+		return variantDescription;
+	}
+
+	public void setVariantDescription(String variantDescription) {
+		this.variantDescription = variantDescription;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getIsbn() {
+		return isbn;
+	}
+
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
+	}
+
+	public String getUpc() {
+		return upc;
+	}
+
+	public void setUpc(String upc) {
+		this.upc = upc;
+	}
+
+	public String getDiamondCode() {
+		return diamondCode;
+	}
+
+	public void setDiamondCode(String diamondCode) {
+		this.diamondCode = diamondCode;
+	}
+
+	public String getEan() {
+		return ean;
+	}
+
+	public void setEan(String ean) {
+		this.ean = ean;
+	}
+
+	public String getIssn() {
+		return issn;
+	}
+
+	public void setIssn(String issn) {
+		this.issn = issn;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
+	}
+
+	public Integer getPageCount() {
+		return pageCount;
+	}
+
+	public void setPageCount(Integer pageCount) {
+		this.pageCount = pageCount;
+	}
+
+	public List<Creator> getCreators() {
+		return creators;
+	}
+
+	public void setCreators(List<Creator> creators) {
+		this.creators = creators;
+	}
+
+	public List<Character> getCharacters() {
+		return characters;
+	}
+
+	public void setCharacters(List<Character> characters) {
+		this.characters = characters;
+	}
 
 }

@@ -1,16 +1,11 @@
 package br.com.thabita.model;
 
-import br.com.thabita.model.util.BaseResource;
-import lombok.Getter;
-import lombok.Setter;
+import br.com.thabita.model.util.BaseEntidade;
 
 /**
  * Creator resource representation.
  */
-@Getter
-@Setter
-@SuppressWarnings("unused")
-public class Creator extends BaseResource {
+public class Creator extends BaseEntidade {
 
 	/**
 	 * The first name of the creator.
@@ -37,5 +32,45 @@ public class Creator extends BaseResource {
 	 * above four fields).
 	 */
 	private String fullName;
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getSuffix() {
+		return suffix;
+	}
+
+	public void setSuffix(String suffix) {
+		this.suffix = suffix;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 
 }

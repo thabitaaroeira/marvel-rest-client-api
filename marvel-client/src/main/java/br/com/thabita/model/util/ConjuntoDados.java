@@ -2,16 +2,10 @@ package br.com.thabita.model.util;
 
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * Conjunto de dados que contem toda a info relacionada aos resultados
  * retornados pela API.
  */
-@Getter
-@Setter
-@SuppressWarnings("unused")
 public class ConjuntoDados<T> {
 
 	/**
@@ -37,6 +31,46 @@ public class ConjuntoDados<T> {
 	/**
 	 * The list of entities returned by the call
 	 */
-	List<T> results;
+	private List<T> valores;
+
+	public List<T> getValores() {
+		return this.valores;
+	}
+
+	public int getOffset() {
+		return offset;
+	}
+
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
+
+	public int getLimit() {
+		return limit;
+	}
+
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+
+	public void setValores(List<T> valores) {
+		this.valores = valores;
+	}
 
 }

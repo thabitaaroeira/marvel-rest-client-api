@@ -1,4 +1,4 @@
-package service;
+package br.com.thabita.service;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
@@ -35,7 +35,7 @@ import com.google.gson.reflect.TypeToken;
 import br.com.thabita.model.Character;
 import br.com.thabita.model.Comic;
 import br.com.thabita.model.Creator;
-import br.com.thabita.model.util.BaseResource;
+import br.com.thabita.model.util.BaseEntidade;
 import br.com.thabita.model.util.Resultado;
 
 /**
@@ -220,7 +220,7 @@ public class MarvelAPICliente implements IMarvelAPI {
 		}.getType());
 	}
 
-	private <T extends BaseResource> Resultado<T> getResponseWithToken(Response response, Type token) {
+	private <T extends BaseEntidade> Resultado<T> getResponseWithToken(Response response, Type token) {
 		String entity = response.readEntity(String.class);
 		logger.debug(entity);
 		return gson.fromJson(entity, token);

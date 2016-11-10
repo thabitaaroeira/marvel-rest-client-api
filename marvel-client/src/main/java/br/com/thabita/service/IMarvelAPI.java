@@ -1,4 +1,4 @@
-package service;
+package br.com.thabita.service;
 
 import java.util.Map;
 

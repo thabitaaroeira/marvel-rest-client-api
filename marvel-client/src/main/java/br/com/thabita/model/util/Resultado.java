@@ -1,55 +1,105 @@
 package br.com.thabita.model.util;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
-import lombok.Getter;
-import lombok.Setter;
-
 /**
- * <p>Result of the API request.</p>
- * <p>Results returned by the API endpoints have the same general format, no matter which entity type the endpoint returns.</p>
- * <p>Every successful call will return a wrapper object, which contains metadata about the call and a container object, which displays pagination information and an array of the results returned by this call.</p>
- * <p>This pattern is consistent even if you are requesting a single object.</p>
+ * Resultado da requisicao da API. <br/>
+ * Os resultados retornados pelos endpoints da API tem o mesmo formato em geral,
+ * nao importa o tipo de entidade que o endpoint retorna. <br/>
+ * Toda chamada de sucesso vai retornar um objeto encapsulador que contem
+ * metadados sobre a chamada um ConjuntoDados que exibe a informacao de
+ * paginacao e um array dos resultados retornados por esta chamada. <br/>
+ * Este padrao eh consistente mesmo que seja requisitado um unico objeto. <br/>
  */
-@SuppressWarnings("unused")
-@Getter
-@Setter
-@XmlRootElement
 public class Resultado<T> {
 
-    /**
-     * The HTTP status code of the returned result
-     */
-    private Integer code;
+	/**
+	 * The HTTP status code of the returned result
+	 */
+	private Integer code;
 
-    /**
-     * A string description of the call status
-     */
-    private String status;
+	/**
+	 * A string description of the call status
+	 */
+	private String status;
 
-    /**
-     * The copyright notice for the returned result
-     */
-    private String copyright;
+	/**
+	 * The copyright notice for the returned result
+	 */
+	private String copyright;
 
-    /**
-     * The attribution notice for this result
-     */
-    private String attributionText;
+	/**
+	 * The attribution notice for this result
+	 */
+	private String attributionText;
 
-    /**
-     * An HTML representation of the attribution notice for this result
-     */
-    private String attributionHTML;
+	/**
+	 * An HTML representation of the attribution notice for this result
+	 */
+	private String attributionHTML;
 
-    /**
-     * A digest value of the content
-     */
-    private String etag;
+	/**
+	 * A digest value of the content
+	 */
+	private String etag;
 
-    /**
-     * The results returned by the call
-     */
-    private ConjuntoDados<T> data;
+	/**
+	 * The results returned by the call
+	 */
+	private ConjuntoDados<T> dados;
+
+	public ConjuntoDados<T> getDados() {
+		return this.dados;
+	}
+
+	public Integer getCode() {
+		return code;
+	}
+
+	public void setCode(Integer code) {
+		this.code = code;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getCopyright() {
+		return copyright;
+	}
+
+	public void setCopyright(String copyright) {
+		this.copyright = copyright;
+	}
+
+	public String getAttributionText() {
+		return attributionText;
+	}
+
+	public void setAttributionText(String attributionText) {
+		this.attributionText = attributionText;
+	}
+
+	public String getAttributionHTML() {
+		return attributionHTML;
+	}
+
+	public void setAttributionHTML(String attributionHTML) {
+		this.attributionHTML = attributionHTML;
+	}
+
+	public String getEtag() {
+		return etag;
+	}
+
+	public void setEtag(String etag) {
+		this.etag = etag;
+	}
+
+	public void setDados(ConjuntoDados<T> dados) {
+		this.dados = dados;
+	}
 
 }
