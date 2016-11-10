@@ -29,13 +29,13 @@ public class CharacterResource {
 	@Path("{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Character read(@PathParam("id") int id) {
+	public Character get(@PathParam("id") int id) {
 		return dao.read(id);
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response create(Character character) {
+	public Response add(Character character) {
 		// Character character = (Character) new Gson().fromJson(conteudo, Character.class);
 		dao.create(character);
 		URI uri = URI.create("/carrinhos/" + character.getId());
@@ -44,7 +44,7 @@ public class CharacterResource {
 
 	@DELETE
 	@Path("{id}")
-	public Response delete(@PathParam("id") int id) {
+	public Response remove(@PathParam("id") int id) {
 		dao.delete(id);
 		return Response.ok().build();
 	}
@@ -56,6 +56,13 @@ public class CharacterResource {
 		Character character = (Character) new Gson().fromJson(conteudo, Character.class);
 		dao.update(character);
 		return Response.ok().build();
+	}
+	
+	@Path("{id}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Character get(@PathParam("id") int id) {
+		return dao.read(id);
 	}
 
 }

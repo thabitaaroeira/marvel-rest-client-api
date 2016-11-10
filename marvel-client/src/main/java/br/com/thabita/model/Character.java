@@ -3,19 +3,42 @@ package br.com.thabita.model;
 import br.com.thabita.util.BaseEntidade;
 
 /**
- * Character resource representation.
+ * Representacao de entidade Character
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Character extends BaseEntidade {
 
+    /**
+     * The name of the character.
+     */
+    private String name;
+
+    /**
+     * A short bio or description of the character.
+     */
+    private String description;
+	
 	/**
-	 * The name of the character.
+	 * The unique ID of the character resource.
 	 */
-	private String name;
+	private Integer id;
 
 	/**
-	 * A short bio or description of the character.
+	 * Resource URIs are references to the representation of a resource within
+	 * the API.
 	 */
-	private String description;
+	private String resourceURI;
+
+	/**
+	 * The date the resource was most recently modified.
+	 */
+	private Date modified;
+	
+	/**
+	 * A resource list containing comics which feature this character.
+	 */
+	private ResourceList<Summary> comics;
 
 	public String getName() {
 		return name;
@@ -32,5 +55,7 @@ public class Character extends BaseEntidade {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	// TODO gerar getters and setters
 
 }

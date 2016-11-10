@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>marvel-client</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Marvel Rest API Client Test</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -117,5 +117,11 @@
 		</plugins>
 	</build>
 
+	<repositories>
+		<repository>
+			<id>central</id>
+			<url>http://central.maven.org/maven2/</url>
+		</repository>
+	</repositories>
 
 </project>

@@ -3,10 +3,28 @@ package br.com.thabita.model;
 import br.com.thabita.util.BaseEntidade;
 
 /**
- * Creator resource representation.
+ * Representacao de entidade Creator.
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Creator extends BaseEntidade {
 
+	/**
+	 * The unique ID of the character resource.
+	 */
+	private Integer id;
+
+	/**
+	 * Resource URIs are references to the representation of a resource within
+	 * the API.
+	 */
+	private String resourceURI;
+
+	/**
+	 * The date the resource was most recently modified.
+	 */
+	private Date modified;
+	
 	/**
 	 * The first name of the creator.
 	 */
@@ -32,6 +50,42 @@ public class Creator extends BaseEntidade {
 	 * above four fields).
 	 */
 	private String fullName;
+	
+    /**
+     * A resource list containing the comics which feature work by this creator.
+     */
+    private ResourceList<Summary> comics;
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getResourceURI() {
+		return resourceURI;
+	}
+
+	public void setResourceURI(String resourceURI) {
+		this.resourceURI = resourceURI;
+	}
+
+	public Date getModified() {
+		return modified;
+	}
+
+	public void setModified(Date modified) {
+		this.modified = modified;
+	}
+
+	public BaseEntidade() {
+	}
+
+	public BaseEntidade(Integer id) {
+		this.id = id;
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -73,4 +127,12 @@ public class Creator extends BaseEntidade {
 		this.fullName = fullName;
 	}
 
+    public ResourceList<Summary> getComics() {
+        return comics;
+    }
+
+    public void setComics(ResourceList<Summary> comics) {
+        this.comics = comics;
+    }
+    
 }

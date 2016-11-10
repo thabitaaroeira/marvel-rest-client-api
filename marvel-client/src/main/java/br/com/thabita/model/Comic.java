@@ -5,8 +5,10 @@ import java.util.List;
 import br.com.thabita.util.BaseEntidade;
 
 /**
- * Comic resource representation.
+ * Representacao de entidade Comic
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Comic extends BaseEntidade {
 
 	/**
