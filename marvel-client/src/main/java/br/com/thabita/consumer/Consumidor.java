@@ -35,7 +35,7 @@ public class Consumidor {
 	public Consumidor() {
 		this.api = MarvelAPICliente.newInstance(publicKey, privateKey);
 
-		List<Class<? extends BaseEntidade>> comics = initComics();
+		List<Comic> comics = initComics();
 		this.comicBusiness = new BancoBusiness(comics);
 
 		List<Character> chars = initChars();

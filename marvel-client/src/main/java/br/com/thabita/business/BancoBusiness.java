@@ -10,7 +10,7 @@ import br.com.thabita.model.util.BaseEntidade;
 public class BancoBusiness {
 
 	private List<BaseEntidade> entidades;
-
+	
 	public BancoBusiness(List<BaseEntidade> entidades) {
 		this.entidades = entidades;
 	}
