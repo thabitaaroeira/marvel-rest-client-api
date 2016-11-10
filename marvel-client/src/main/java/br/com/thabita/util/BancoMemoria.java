@@ -1,4 +1,4 @@
-package br.com.thabita.consumer;
+package br.com.thabita.util;
 
 import java.util.List;
 

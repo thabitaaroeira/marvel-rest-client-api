@@ -1,4 +1,4 @@
-package br.com.thabita.model.util.constants;
+package br.com.thabita.model.constants;
 
 /**
  * Parametros utilizados na Query.

@@ -1,4 +1,4 @@
-package br.com.thabita.model.util;
+package br.com.thabita.util;
 
 /**
  * Resultado da requisicao da API. <br/>

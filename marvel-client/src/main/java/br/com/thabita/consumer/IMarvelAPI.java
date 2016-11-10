@@ -1,11 +1,11 @@
-package br.com.thabita.service;
+package br.com.thabita.consumer;
 
 import java.util.Map;
 
 import br.com.thabita.model.Character;
 import br.com.thabita.model.Comic;
 import br.com.thabita.model.Creator;
-import br.com.thabita.model.util.Resultado;
+import br.com.thabita.util.Resultado;
 
 /**
  * Interface que expõe os métodos possíveis.
@@ -17,7 +17,7 @@ public interface IMarvelAPI {
 	 * 
 	 * @param queryParams
 	 *            Map containing the query parameters.
-	 * @return The {@link br.com.thabita.model.util.Resultado} of the request.
+	 * @return The {@link br.com.thabita.util.Resultado} of the request.
 	 */
 	Resultado<Character> getCharacters(Map<String, Object> queryParams);
 
@@ -26,7 +26,7 @@ public interface IMarvelAPI {
 	 *
 	 * @param characterId
 	 *            A single character id.
-	 * @return The {@link br.com.thabita.model.util.Resultado} of the request.
+	 * @return The {@link br.com.thabita.util.Resultado} of the request.
 	 */
 	Resultado<Character> getCharacter(Integer characterId);
 
@@ -37,7 +37,7 @@ public interface IMarvelAPI {
 	 *            The character id.
 	 * @param queryParams
 	 *            Map containing the query parameters.
-	 * @return The {@link br.com.thabita.model.util.Resultado} of the request.
+	 * @return The {@link br.com.thabita.util.Resultado} of the request.
 	 */
 	Resultado<Comic> getCharacterComics(Integer characterId, Map<String, Object> queryParams);
 
@@ -46,7 +46,7 @@ public interface IMarvelAPI {
 	 * 
 	 * @param queryParams
 	 *            Map containing the query parameters.
-	 * @return The {@link br.com.thabita.model.util.Resultado} of the request.
+	 * @return The {@link br.com.thabita.util.Resultado} of the request.
 	 */
 	Resultado<Comic> getComics(Map<String, Object> queryParams);
 
@@ -55,7 +55,7 @@ public interface IMarvelAPI {
 	 *
 	 * @param comicId
 	 *            A single comic.
-	 * @return The {@link br.com.thabita.model.util.Resultado} of the request.
+	 * @return The {@link br.com.thabita.util.Resultado} of the request.
 	 */
 	Resultado<Comic> getComic(Integer comicId);
 
@@ -66,7 +66,7 @@ public interface IMarvelAPI {
 	 *            A single comic.
 	 * @param queryParams
 	 *            Map containing the query parameters.
-	 * @return The {@link br.com.thabita.model.util.Resultado} of the request.
+	 * @return The {@link br.com.thabita.util.Resultado} of the request.
 	 */
 	Resultado<Character> getComicCharacters(Integer comicId, Map<String, Object> queryParams);
 
@@ -77,7 +77,7 @@ public interface IMarvelAPI {
 	 *            A single comic.
 	 * @param queryParams
 	 *            Map containing the query parameters.
-	 * @return The {@link br.com.thabita.model.util.Resultado} of the request.
+	 * @return The {@link br.com.thabita.util.Resultado} of the request.
 	 */
 	Resultado<Creator> getComicCreators(Integer comicId, Map<String, Object> queryParams);
 
@@ -86,7 +86,7 @@ public interface IMarvelAPI {
 	 * 
 	 * @param queryParams
 	 *            Map containing the query parameters.
-	 * @return The {@link br.com.thabita.model.util.Resultado} of the request.
+	 * @return The {@link br.com.thabita.util.Resultado} of the request.
 	 */
 	Resultado<Creator> getCreators(Map<String, Object> queryParams);
 
@@ -95,7 +95,7 @@ public interface IMarvelAPI {
 	 *
 	 * @param creatorId
 	 *            A single creator id.
-	 * @return The {@link br.com.thabita.model.util.Resultado} of the request.
+	 * @return The {@link br.com.thabita.util.Resultado} of the request.
 	 */
 	Resultado<Creator> getCreator(Integer creatorId);
 
@@ -106,7 +106,7 @@ public interface IMarvelAPI {
 	 *            A single creator id.
 	 * @param queryParams
 	 *            Map containing the query parameters.
-	 * @return The {@link br.com.thabita.model.util.Resultado} of the request.
+	 * @return The {@link br.com.thabita.util.Resultado} of the request.
 	 */
 	Resultado<Comic> getCreatorComics(Integer creatorId, Map<String, Object> queryParams);
 

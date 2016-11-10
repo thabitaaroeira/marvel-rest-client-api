@@ -1,4 +1,4 @@
-package br.com.thabita.service;
+package br.com.thabita.consumer;
 
 import java.lang.reflect.Type;
 import java.text.ParseException;
@@ -35,11 +35,11 @@ import com.google.gson.reflect.TypeToken;
 import br.com.thabita.model.Character;
 import br.com.thabita.model.Comic;
 import br.com.thabita.model.Creator;
-import br.com.thabita.model.util.BaseEntidade;
-import br.com.thabita.model.util.Resultado;
+import br.com.thabita.util.BaseEntidade;
+import br.com.thabita.util.Resultado;
 
 /**
- * Implementa a interface {@link com.pcab.marvel.IMarvelAPI} .
+ * Implementa a interface {@link br.com.thabita.consumer.pcab.marvel.IMarvelAPI} .
  */
 public class MarvelAPICliente implements IMarvelAPI {
 
@@ -75,7 +75,7 @@ public class MarvelAPICliente implements IMarvelAPI {
 	}
 
 	/**
-	 * Cria uma instancia de {@link com.pcab.marvel.IMarvelAPI} .
+	 * Cria uma instancia de {@link br.com.thabita.consumer.pcab.marvel.IMarvelAPI} .
 	 * 
 	 * @param publicKey
 	 *            public key to be used on the requests.

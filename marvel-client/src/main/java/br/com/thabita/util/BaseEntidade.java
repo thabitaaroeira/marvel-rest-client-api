@@ -1,10 +1,16 @@
-package br.com.thabita.model.util;
+package br.com.thabita.util;
 
 import java.util.Date;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Base Entity for the resources provided by the API.
  */
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class BaseEntidade {
 
 	/**

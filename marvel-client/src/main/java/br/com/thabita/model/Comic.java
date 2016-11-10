@@ -2,7 +2,7 @@ package br.com.thabita.model;
 
 import java.util.List;
 
-import br.com.thabita.model.util.BaseEntidade;
+import br.com.thabita.util.BaseEntidade;
 
 /**
  * Comic resource representation.

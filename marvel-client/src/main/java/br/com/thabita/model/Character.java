@@ -1,6 +1,6 @@
 package br.com.thabita.model;
 
-import br.com.thabita.model.util.BaseEntidade;
+import br.com.thabita.util.BaseEntidade;
 
 /**
  * Character resource representation.

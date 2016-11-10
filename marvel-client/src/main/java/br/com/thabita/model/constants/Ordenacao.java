@@ -1,4 +1,4 @@
-package br.com.thabita.model.util.constants;
+package br.com.thabita.model.constants;
 
 /**
  * Contem todas as opcoes de ordenacao de query
