@@ -1,6 +1,13 @@
 package br.com.thabita.model;
 
+import java.util.Date;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import br.com.thabita.util.BaseEntidade;
+import br.com.thabita.util.ConjuntoDados;
 
 /**
  * Representacao de entidade Creator.
@@ -24,7 +31,7 @@ public class Creator extends BaseEntidade {
 	 * The date the resource was most recently modified.
 	 */
 	private Date modified;
-	
+
 	/**
 	 * The first name of the creator.
 	 */
@@ -50,12 +57,12 @@ public class Creator extends BaseEntidade {
 	 * above four fields).
 	 */
 	private String fullName;
-	
-    /**
-     * A resource list containing the comics which feature work by this creator.
-     */
-    private ResourceList<Summary> comics;
-	
+
+	/**
+	 * A resource list containing the comics which feature work by this creator.
+	 */
+	private ConjuntoDados<Comic> comics;
+
 	public Integer getId() {
 		return id;
 	}
@@ -78,13 +85,6 @@ public class Creator extends BaseEntidade {
 
 	public void setModified(Date modified) {
 		this.modified = modified;
-	}
-
-	public BaseEntidade() {
-	}
-
-	public BaseEntidade(Integer id) {
-		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -127,12 +127,12 @@ public class Creator extends BaseEntidade {
 		this.fullName = fullName;
 	}
 
-    public ResourceList<Summary> getComics() {
-        return comics;
-    }
+	public ConjuntoDados<Comic> getComics() {
+		return comics;
+	}
 
-    public void setComics(ResourceList<Summary> comics) {
-        this.comics = comics;
-    }
-    
+	public void setComics(ConjuntoDados<Comic> comics) {
+		this.comics = comics;
+	}
+
 }

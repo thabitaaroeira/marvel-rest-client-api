@@ -17,27 +17,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 
-import br.com.thabita.dao.CreatorDAO;
+import br.com.thabita.business.ICreatorBusiness;
 import br.com.thabita.model.Creator;
 
 @Path("creators")
 public class CreatorResource {
 
 	@Autowired
-	private CreatorDAO dao;
+	private ICreatorBusiness business;
 
 	@Path("{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Creator read(@PathParam("id") int id) {
-		return dao.read(id);
+		return business.read(id);
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response create(Creator creator) {
 		// Creator creator = (Creator) new Gson().fromJson(conteudo, Creator.class);
-		dao.create(creator);
+		business.create(creator);
 		URI uri = URI.create("/carrinhos/" + creator.getId());
 		return Response.created(uri).build();
 	}
@@ -45,7 +45,7 @@ public class CreatorResource {
 	@DELETE
 	@Path("{id}")
 	public Response delete(@PathParam("id") int id) {
-		dao.delete(id);
+		business.delete(id);
 		return Response.ok().build();
 	}
 
@@ -54,7 +54,7 @@ public class CreatorResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") int id, String conteudo) {
 		Creator creator = (Creator) new Gson().fromJson(conteudo, Creator.class);
-		dao.update(creator);
+		business.update(creator);
 		return Response.ok().build();
 	}
 

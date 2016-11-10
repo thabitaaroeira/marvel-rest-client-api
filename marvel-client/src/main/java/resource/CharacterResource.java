@@ -17,27 +17,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 
-import br.com.thabita.dao.CharacterDAO;
+import br.com.thabita.business.impl.CharacterBusiness;
 import br.com.thabita.model.Character;
 
 @Path("characters")
 public class CharacterResource {
 
 	@Autowired
-	private CharacterDAO dao;
+	private CharacterBusiness business;
 
 	@Path("{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Character get(@PathParam("id") int id) {
-		return dao.read(id);
+		return business.read(id);
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response add(Character character) {
 		// Character character = (Character) new Gson().fromJson(conteudo, Character.class);
-		dao.create(character);
+		business.create(character);
 		URI uri = URI.create("/carrinhos/" + character.getId());
 		return Response.created(uri).build();
 	}
@@ -45,7 +45,7 @@ public class CharacterResource {
 	@DELETE
 	@Path("{id}")
 	public Response remove(@PathParam("id") int id) {
-		dao.delete(id);
+		business.delete(id);
 		return Response.ok().build();
 	}
 
@@ -54,15 +54,8 @@ public class CharacterResource {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") int id, String conteudo) {
 		Character character = (Character) new Gson().fromJson(conteudo, Character.class);
-		dao.update(character);
+		business.update(character);
 		return Response.ok().build();
 	}
 	
-	@Path("{id}")
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public Character get(@PathParam("id") int id) {
-		return dao.read(id);
-	}
-
 }

@@ -1,11 +1,13 @@
-package br.com.thabita.dao;
+package br.com.thabita.business.impl;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 
 import br.com.thabita.consumer.IMarvelAPI;
 import br.com.thabita.consumer.MarvelAPICliente;
 
-public abstract class BaseDAO {
+public abstract class BaseBusiness {
 
 	@Value("${key.public}")
 	protected String publicKey;
@@ -15,8 +17,7 @@ public abstract class BaseDAO {
 
 	private IMarvelAPI api;
 
-	public BaseDAO() {
-		this.api = MarvelAPICliente.newInstance(publicKey, privateKey);
+	public BaseBusiness() {
 	}
 
 	public IMarvelAPI getApi() {
@@ -25,6 +26,11 @@ public abstract class BaseDAO {
 
 	public void setApi(IMarvelAPI api) {
 		this.api = api;
+	}
+
+	@PostConstruct
+	public void init() {
+		this.api = MarvelAPICliente.newInstance(publicKey, privateKey);
 	}
 
 }
