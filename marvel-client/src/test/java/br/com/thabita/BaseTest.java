@@ -12,7 +12,7 @@ import br.com.thabita.model.Character;
 import br.com.thabita.model.Comic;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = AppConfig.class)
+@ContextConfiguration(classes = Config.class)
 public class BaseTest {
 
 	protected Character buildCharacter() {

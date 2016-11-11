@@ -1,4 +1,4 @@
-package resource;
+package br.com.thabita.resource;
 
 import java.net.URI;
 
@@ -17,34 +17,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 
-import br.com.thabita.business.impl.CharacterBusiness;
-import br.com.thabita.model.Character;
+import br.com.thabita.business.ICreatorBusiness;
+import br.com.thabita.model.Creator;
 
-@Path("characters")
-public class CharacterResource {
+@Path("creators")
+public class CreatorResource {
 
 	@Autowired
-	private CharacterBusiness business;
+	private ICreatorBusiness business;
 
 	@Path("{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Character get(@PathParam("id") int id) {
+	public Creator read(@PathParam("id") int id) {
 		return business.read(id);
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response add(Character character) {
-		// Character character = (Character) new Gson().fromJson(conteudo, Character.class);
-		business.create(character);
-		URI uri = URI.create("/carrinhos/" + character.getId());
+	public Response create(Creator creator) {
+		// Creator creator = (Creator) new Gson().fromJson(conteudo, Creator.class);
+		business.create(creator);
+		URI uri = URI.create("/carrinhos/" + creator.getId());
 		return Response.created(uri).build();
 	}
 
 	@DELETE
 	@Path("{id}")
-	public Response remove(@PathParam("id") int id) {
+	public Response delete(@PathParam("id") int id) {
 		business.delete(id);
 		return Response.ok().build();
 	}
@@ -53,9 +53,9 @@ public class CharacterResource {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") int id, String conteudo) {
-		Character character = (Character) new Gson().fromJson(conteudo, Character.class);
-		business.update(character);
+		Creator creator = (Creator) new Gson().fromJson(conteudo, Creator.class);
+		business.update(creator);
 		return Response.ok().build();
 	}
-	
+
 }

@@ -1,11 +1,10 @@
 package br.com.thabita.business.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
@@ -22,10 +21,11 @@ public class CharacterBusiness extends BaseBusiness implements ICharacterBusines
 	private static AtomicInteger contador = new AtomicInteger(1);
 
 	@Override
-	public void create(Character character) {
+	public Character create(Character character) {
 		int id = contador.incrementAndGet();
 		character.setId(id);
 		banco.put(id, character);
+		return character;
 	}
 
 	@Override
@@ -34,8 +34,9 @@ public class CharacterBusiness extends BaseBusiness implements ICharacterBusines
 	}
 
 	@Override
-	public void update(Character character) {
+	public Character update(Character character) {
 		banco.put(character.getId(), character);
+		return character;
 	}
 
 	@Override
@@ -43,8 +44,8 @@ public class CharacterBusiness extends BaseBusiness implements ICharacterBusines
 		banco.remove(id);
 	}
 
-	@PostConstruct
-	public void init() {
+	@Override
+	public List<Character> getAll() {
 		// Buscando Todos os Characters
 		Map<String, Object> params = new HashMap<String, Object>();
 		Resultado<Character> resultado = super.getApi().getCharacters(params);
@@ -62,6 +63,7 @@ public class CharacterBusiness extends BaseBusiness implements ICharacterBusines
 			character.setComics(comics);
 			banco.put(character.getId(), character);
 		}
+		
+		return new ArrayList<Character>(banco.values());
 	}
-
 }

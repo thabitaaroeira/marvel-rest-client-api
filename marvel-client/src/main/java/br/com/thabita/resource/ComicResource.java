@@ -1,4 +1,4 @@
-package resource;
+package br.com.thabita.resource;
 
 import java.net.URI;
 
@@ -17,28 +17,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 
-import br.com.thabita.business.ICreatorBusiness;
-import br.com.thabita.model.Creator;
+import br.com.thabita.business.impl.ComicBusiness;
+import br.com.thabita.model.Comic;
 
-@Path("creators")
-public class CreatorResource {
+@Path("comics")
+public class ComicResource {
 
 	@Autowired
-	private ICreatorBusiness business;
+	private ComicBusiness business;
 
 	@Path("{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Creator read(@PathParam("id") int id) {
+	public Comic read(@PathParam("id") int id) {
 		return business.read(id);
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response create(Creator creator) {
-		// Creator creator = (Creator) new Gson().fromJson(conteudo, Creator.class);
-		business.create(creator);
-		URI uri = URI.create("/carrinhos/" + creator.getId());
+	public Response create(Comic comic) {
+		// Comic comic = (Comic) new Gson().fromJson(conteudo, Comic.class);
+		business.create(comic);
+		URI uri = URI.create("/carrinhos/" + comic.getId());
 		return Response.created(uri).build();
 	}
 
@@ -53,8 +53,8 @@ public class CreatorResource {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") int id, String conteudo) {
-		Creator creator = (Creator) new Gson().fromJson(conteudo, Creator.class);
-		business.update(creator);
+		Comic comic = (Comic) new Gson().fromJson(conteudo, Comic.class);
+		business.update(comic);
 		return Response.ok().build();
 	}
 

@@ -1,4 +1,4 @@
-package resource;
+package br.com.thabita.resource;
 
 import java.net.URI;
 
@@ -14,37 +14,39 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 
-import br.com.thabita.business.impl.ComicBusiness;
-import br.com.thabita.model.Comic;
+import br.com.thabita.business.impl.CharacterBusiness;
+import br.com.thabita.model.Character;
 
-@Path("comics")
-public class ComicResource {
+@Component
+@Path("characters")
+@Produces(MediaType.APPLICATION_JSON)
+public class CharacterResource {
 
 	@Autowired
-	private ComicBusiness business;
+	private CharacterBusiness business;
 
 	@Path("{id}")
 	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public Comic read(@PathParam("id") int id) {
+	public Character get(@PathParam("id") int id) {
 		return business.read(id);
 	}
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response create(Comic comic) {
-		// Comic comic = (Comic) new Gson().fromJson(conteudo, Comic.class);
-		business.create(comic);
-		URI uri = URI.create("/carrinhos/" + comic.getId());
+	public Response add(Character character) {
+		// Character character = (Character) new Gson().fromJson(conteudo, Character.class);
+		business.create(character);
+		URI uri = URI.create("/carrinhos/" + character.getId());
 		return Response.created(uri).build();
 	}
 
 	@DELETE
 	@Path("{id}")
-	public Response delete(@PathParam("id") int id) {
+	public Response remove(@PathParam("id") int id) {
 		business.delete(id);
 		return Response.ok().build();
 	}
@@ -53,9 +55,9 @@ public class ComicResource {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response update(@PathParam("id") int id, String conteudo) {
-		Comic comic = (Comic) new Gson().fromJson(conteudo, Comic.class);
-		business.update(comic);
+		Character character = (Character) new Gson().fromJson(conteudo, Character.class);
+		business.update(character);
 		return Response.ok().build();
 	}
-
+	
 }
