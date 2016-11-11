@@ -2,17 +2,11 @@ package br.com.thabita.model;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import br.com.thabita.util.BaseEntidade;
 
 /**
  * Representacao de entidade Character
  */
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class Character extends BaseEntidade {
 
 	/**

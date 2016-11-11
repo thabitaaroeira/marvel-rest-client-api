@@ -1,5 +1,6 @@
 package br.com.thabita.bean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.ManagedBean;
@@ -15,7 +16,7 @@ import br.com.thabita.model.Character;
 import lombok.Getter;
 import lombok.Setter;;
 
-@RequestMapping("/")
+@RequestMapping("/character")
 @ManagedBean
 @ViewScoped
 public class CharacterBean {
@@ -40,7 +41,8 @@ public class CharacterBean {
 	@PostConstruct
 	public void init() {
 		this.character = new Character();
-		this.characters = business.getAll();
+		this.characters = new ArrayList<Character>();
+		// this.characters.addAll(business.getAll());
 	}
 
 	public void gravar() {

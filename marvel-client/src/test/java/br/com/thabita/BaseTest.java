@@ -4,15 +4,11 @@ import java.util.Date;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import br.com.thabita.model.Character;
 import br.com.thabita.model.Comic;
+import br.com.thabita.model.Creator;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = Config.class)
 public class BaseTest {
 
 	protected Character buildCharacter() {
@@ -43,6 +39,19 @@ public class BaseTest {
 		comic.setUpc(random);
 		comic.setVariantDescription(random);
 		return comic;
+	}
+
+	protected Creator buildCreator() {
+		String random = RandomStringUtils.random(10);
+		Creator creator = new Creator();
+		creator.setFirstName(random);
+		creator.setFullName(random);
+		creator.setLastName(random);
+		creator.setMiddleName(random);
+		creator.setModified(new Date());
+		creator.setResourceURI(random);
+		creator.setSuffix(random);
+		return creator;
 	}
 
 }
