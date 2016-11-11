@@ -2,28 +2,28 @@ package br.com.thabita.bean;
 
 import java.util.List;
 
+import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.thabita.business.impl.CharacterBusiness;
+import br.com.thabita.business.impl.CharacterBusinessImpl;
 import br.com.thabita.model.Character;
 import lombok.Getter;
 import lombok.Setter;;
 
 @RequestMapping("/")
-@Component
-@Scope("session")
+@ManagedBean
+@ViewScoped
 public class CharacterBean {
 
 	static Logger log = Logger.getLogger(CharacterBean.class);
 
 	@Autowired
-	private CharacterBusiness business;
+	private CharacterBusinessImpl business;
 
 	@Getter
 	@Setter

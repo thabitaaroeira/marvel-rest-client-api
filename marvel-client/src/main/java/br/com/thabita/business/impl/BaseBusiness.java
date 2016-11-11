@@ -4,8 +4,8 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
 
-import br.com.thabita.consumer.IMarvelAPI;
 import br.com.thabita.consumer.MarvelAPICliente;
+import br.com.thabita.consumer.MarvelAPIClienteImpl;
 
 public abstract class BaseBusiness {
 
@@ -15,22 +15,22 @@ public abstract class BaseBusiness {
 	@Value("${key.private}")
 	protected String privateKey;
 
-	private IMarvelAPI api;
+	private MarvelAPICliente api;
 
 	public BaseBusiness() {
 	}
 
-	public IMarvelAPI getApi() {
+	public MarvelAPICliente getApi() {
 		return api;
 	}
 
-	public void setApi(IMarvelAPI api) {
+	public void setApi(MarvelAPICliente api) {
 		this.api = api;
 	}
 
 	@PostConstruct
 	public void init() {
-		this.api = MarvelAPICliente.newInstance(publicKey, privateKey);
+		this.api = MarvelAPIClienteImpl.newInstance(publicKey, privateKey);
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.com.thabita.model.Character;
 
-public interface ICharacterBusiness {
+public interface CharacterBusiness {
 
 	public Character create(Character character);
 

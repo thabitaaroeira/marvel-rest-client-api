@@ -1,5 +1,6 @@
 package br.com.thabita.business.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,13 +8,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Component;
 
-import br.com.thabita.business.IComicBusiness;
+import br.com.thabita.business.ComicBusiness;
+import br.com.thabita.model.Character;
 import br.com.thabita.model.Comic;
-import br.com.thabita.util.ConjuntoDados;
-import br.com.thabita.util.Resultado;
+import br.com.thabita.model.Creator;
 
 @Component
-public class ComicBusiness extends BaseBusiness implements IComicBusiness {
+public class ComicBusinessImpl extends BaseBusiness implements ComicBusiness {
 
 	private static Map<Integer, Comic> banco = new HashMap<Integer, Comic>();
 	private static AtomicInteger contador = new AtomicInteger(1);
@@ -40,15 +41,24 @@ public class ComicBusiness extends BaseBusiness implements IComicBusiness {
 		banco.remove(id);
 	}
 
-	public void fill() {
+	@Override
+	public List<Comic> getAll() {
 		Map<String, Object> params = new HashMap<String, Object>();
-		Resultado<Comic> resultado = super.getApi().getComics(params);
-		ConjuntoDados<Comic> dados = resultado.getDados();
-		List<Comic> comics = dados.getValores();
+		List<Comic> comics = super.getApi().getComics(params);
 
 		for (Comic comic : comics) {
+			params = new HashMap<String, Object>();
+			List<Character> characters = super.getApi().getComicCharacters(comic.getId(), params);
+			comic.setCharacters(characters);
+			
+			params = new HashMap<String, Object>();
+			List<Creator> creators = super.getApi().getComicCreators(comic.getId(), params);
+			comic.setCreators(creators);
+
 			banco.put(comic.getId(), comic);
 		}
+
+		return new ArrayList<Comic>(banco.values());
 	}
 
 }

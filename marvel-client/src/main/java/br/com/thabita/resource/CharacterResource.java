@@ -18,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.gson.Gson;
 
-import br.com.thabita.business.impl.CharacterBusiness;
+import br.com.thabita.business.impl.CharacterBusinessImpl;
 import br.com.thabita.model.Character;
 
 @Component
@@ -27,7 +27,7 @@ import br.com.thabita.model.Character;
 public class CharacterResource {
 
 	@Autowired
-	private CharacterBusiness business;
+	private CharacterBusinessImpl business;
 
 	@Path("{id}")
 	@GET

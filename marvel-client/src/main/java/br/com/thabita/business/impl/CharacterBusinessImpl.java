@@ -8,14 +8,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Component;
 
-import br.com.thabita.business.ICharacterBusiness;
+import br.com.thabita.business.CharacterBusiness;
 import br.com.thabita.model.Character;
 import br.com.thabita.model.Comic;
-import br.com.thabita.util.ConjuntoDados;
-import br.com.thabita.util.Resultado;
 
 @Component
-public class CharacterBusiness extends BaseBusiness implements ICharacterBusiness {
+public class CharacterBusinessImpl extends BaseBusiness implements CharacterBusiness {
 
 	private static Map<Integer, Character> banco = new HashMap<Integer, Character>();
 	private static AtomicInteger contador = new AtomicInteger(1);
@@ -46,24 +44,18 @@ public class CharacterBusiness extends BaseBusiness implements ICharacterBusines
 
 	@Override
 	public List<Character> getAll() {
-		// Buscando Todos os Characters
 		Map<String, Object> params = new HashMap<String, Object>();
-		Resultado<Character> resultado = super.getApi().getCharacters(params);
-		ConjuntoDados<Character> dados = resultado.getDados();
-		List<Character> characters = dados.getValores();
+		List<Character> characters = super.getApi().getCharacters(params);
 
 		for (Character character : characters) {
-			// Buscando as Comics para cada Char
 			params = new HashMap<String, Object>();
-			Resultado<Comic> comicsResultado = super.getApi().getCharacterComics(character.getId(), params);
-			ConjuntoDados<Comic> comicsDados = comicsResultado.getDados();
-			List<Comic> comics = comicsDados.getValores();
+			List<Comic> comics = super.getApi().getCharacterComics(character.getId(), params);
 
-			// Preenchendo o banco em mem
 			character.setComics(comics);
+
 			banco.put(character.getId(), character);
 		}
-		
+
 		return new ArrayList<Character>(banco.values());
 	}
 }

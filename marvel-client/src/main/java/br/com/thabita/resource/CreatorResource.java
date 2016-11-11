@@ -17,14 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 
-import br.com.thabita.business.ICreatorBusiness;
+import br.com.thabita.business.CreatorBusiness;
 import br.com.thabita.model.Creator;
 
 @Path("creators")
 public class CreatorResource {
 
 	@Autowired
-	private ICreatorBusiness business;
+	private CreatorBusiness business;
 
 	@Path("{id}")
 	@GET

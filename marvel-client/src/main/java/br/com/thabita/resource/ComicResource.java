@@ -17,14 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
 
-import br.com.thabita.business.impl.ComicBusiness;
+import br.com.thabita.business.impl.ComicBusinessImpl;
 import br.com.thabita.model.Comic;
 
 @Path("comics")
 public class ComicResource {
 
 	@Autowired
-	private ComicBusiness business;
+	private ComicBusinessImpl business;
 
 	@Path("{id}")
 	@GET
