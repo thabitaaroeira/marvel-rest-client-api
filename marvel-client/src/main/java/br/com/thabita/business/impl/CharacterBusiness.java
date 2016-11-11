@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.stereotype.Component;
 
 import br.com.thabita.business.ICharacterBusiness;
@@ -41,7 +43,8 @@ public class CharacterBusiness extends BaseBusiness implements ICharacterBusines
 		banco.remove(id);
 	}
 
-	public void fill() {
+	@PostConstruct
+	public void init() {
 		// Buscando Todos os Characters
 		Map<String, Object> params = new HashMap<String, Object>();
 		Resultado<Character> resultado = super.getApi().getCharacters(params);
