@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -39,26 +40,22 @@ import br.com.thabita.model.Creator;
 import br.com.thabita.util.BaseEntidade;
 
 /**
- * Implementa a interface
- * {@link br.com.thabita.consumer.MarvelAPICliente.marvel.IMarvelAPI} .
+ * Implementa a interface MarvelAPICliente
  */
 public class MarvelAPIClienteImpl implements MarvelAPICliente {
+
+	private static Logger logger = LogManager.getLogger(MarvelAPIClienteImpl.class);
 
 	public static final String COMICS = "comics";
 	public static final String CHARACTERS = "characters";
 	public static final String CREATORS = "creators";
-
-	private static Logger logger = LogManager.getLogger(MarvelAPIClienteImpl.class);
-
-	private String baseUrl = "http://gateway.marvel.com";
-	private String version = "v1";
-
-	private WebTarget baseTarget;
+	private static final String baseUrl = "http://gateway.marvel.com";
+	private static final String version = "v1";
 
 	private final Gson gson;
-
 	private final CharSequence publicKey;
 	private final CharSequence privateKey;
+	private WebTarget baseTarget;
 	private URLCodec encoder;
 
 	private MarvelAPIClienteImpl(String publicKey, String privateKey) {
@@ -164,7 +161,6 @@ public class MarvelAPIClienteImpl implements MarvelAPICliente {
 
 	private Response executeRequest(String resource, Map<String, Object> queryParams) {
 		WebTarget baseRequest = buildBaseRequest(resource, queryParams);
-
 		Response response = baseRequest.request(MediaType.APPLICATION_JSON_TYPE).get(Response.class);
 		return response;
 	}
@@ -180,13 +176,12 @@ public class MarvelAPIClienteImpl implements MarvelAPICliente {
 	private WebTarget buildBaseRequest(String resource, Map<String, Object> queryParams) {
 		Long currentTime = System.currentTimeMillis();
 
-		byte[] hash = org.apache.commons.codec.digest.DigestUtils
-				.md5(currentTime + getPrivateKey().toString() + getPublicKey().toString());
+		byte[] hash = DigestUtils.md5(currentTime + getPrivateKey().toString() + getPublicKey().toString());
 
-		final String List = new String(Hex.encodeHex(hash));
+		final String hashes = new String(Hex.encodeHex(hash));
 
 		WebTarget baseRequest = baseTarget.path(version).path("public").path(resource).queryParam("ts", currentTime)
-				.queryParam("apikey", publicKey).queryParam("hash", List);
+				.queryParam("apikey", publicKey).queryParam("hash", hashes);
 
 		if (queryParams != null) {
 
