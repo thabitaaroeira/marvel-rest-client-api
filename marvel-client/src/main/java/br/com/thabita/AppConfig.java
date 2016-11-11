@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
-@ComponentScan(basePackages = "br.com.thabita.dao")
+@ComponentScan(basePackages = "br.com.thabita.business")
 @PropertySource(value = { "classpath:application.properties" })
 public class AppConfig {
 

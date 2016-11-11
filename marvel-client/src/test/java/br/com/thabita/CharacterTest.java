@@ -8,14 +8,14 @@ import java.util.Arrays;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import br.com.thabita.business.impl.CharacterBusiness;
+import br.com.thabita.business.ICharacterBusiness;
 import br.com.thabita.model.Character;
 import br.com.thabita.model.Comic;
 
 public class CharacterTest extends BaseTest {
 
 	@Autowired
-	private CharacterBusiness business;
+	private ICharacterBusiness business;
 
 	@Test
 	public void testaAdiciona() {
