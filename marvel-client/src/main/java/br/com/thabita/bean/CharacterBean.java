@@ -5,29 +5,41 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
-import javax.faces.view.ViewScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
-import br.com.thabita.business.impl.CharacterBusinessImpl;
+import br.com.thabita.business.CharacterBusiness;
 import br.com.thabita.model.Character;
 import br.com.thabita.model.constants.Parametro;
 import lombok.Getter;
 import lombok.Setter;;
 
-@RequestMapping("/character")
-@ManagedBean
+@Controller
+@ManagedBean(name = "characterBean", eager = true)
 @ViewScoped
+@Component
 public class CharacterBean {
+
+	@RequestMapping(value = "/character", method = RequestMethod.GET)
+	public ModelAndView character() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("character");
+		return mav;
+	}
 
 	static Logger log = Logger.getLogger(CharacterBean.class);
 
 	@Autowired
-	private CharacterBusinessImpl business;
+	private CharacterBusiness business;
 
 	@Getter
 	@Setter
