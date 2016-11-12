@@ -16,7 +16,7 @@ import br.com.thabita.model.Comic;
 import br.com.thabita.model.Creator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = Config.class)
+@ContextConfiguration(classes = RestConfig.class)
 public class CreatorTest extends BaseTest {
 
 	@Autowired

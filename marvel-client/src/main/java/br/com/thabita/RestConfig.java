@@ -17,14 +17,14 @@ import br.com.thabita.resource.CreatorResource;
 @ComponentScan(basePackages = "br.com.thabita.business")
 @PropertySource(value = { "classpath:application.properties" })
 @Configuration
-public class Config extends ResourceConfig {
+public class RestConfig extends ResourceConfig {
 
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
 
-	public Config() {
+	public RestConfig() {
 		super.register(CharacterResource.class);
 		super.register(ComicResource.class);
 		super.register(CreatorResource.class);

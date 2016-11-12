@@ -16,7 +16,7 @@ import br.com.thabita.model.Character;
 import br.com.thabita.model.Comic;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = Config.class)
+@ContextConfiguration(classes = RestConfig.class)
 public class CharacterTest extends BaseTest {
 
 	@Autowired
