@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import br.com.thabita.business.CharacterBusiness;
 import br.com.thabita.model.Character;
@@ -43,19 +44,18 @@ public class CharacterBusinessImpl extends BaseBusiness implements CharacterBusi
 	}
 
 	@Override
-	public List<Character> getAll() {
-		Map<String, Object> params = new HashMap<String, Object>();
-		List<Character> characters = super.getApi().getCharacters(params);
+	public List<Character> getAll(Map<String, Object> parametros) {
+		if (!CollectionUtils.isEmpty(parametros)) {
+			List<Character> characters = super.getApi().getCharacters(parametros);
 
-		for (Character character : characters) {
-			params = new HashMap<String, Object>();
-			List<Comic> comics = super.getApi().getCharacterComics(character.getId(), params);
+			for (Character character : characters) {
+				List<Comic> comics = super.getApi().getCharacterComics(character.getId(), parametros);
 
-			character.setComics(comics);
+				character.setComics(comics);
 
-			banco.put(character.getId(), character);
+				banco.put(character.getId(), character);
+			}
 		}
-
 		return new ArrayList<Character>(banco.values());
 	}
 }

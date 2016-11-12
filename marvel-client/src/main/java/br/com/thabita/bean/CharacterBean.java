@@ -1,7 +1,9 @@
 package br.com.thabita.bean;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.ManagedBean;
 import javax.annotation.PostConstruct;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.com.thabita.business.impl.CharacterBusinessImpl;
 import br.com.thabita.model.Character;
+import br.com.thabita.model.constants.Parametro;
 import lombok.Getter;
 import lombok.Setter;;
 
@@ -25,6 +28,10 @@ public class CharacterBean {
 
 	@Autowired
 	private CharacterBusinessImpl business;
+
+	@Getter
+	@Setter
+	private Character filtro;
 
 	@Getter
 	@Setter
@@ -68,7 +75,15 @@ public class CharacterBean {
 	}
 
 	public void carregarCharacterPorId() {
+		log.info("Buscando Personagem por id");
 		this.character = business.read(this.characterId);
+	}
+
+	public void pesquisar() {
+		log.info("Pesquisando por nome");
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put(Parametro.NAME.name(), filtro.getName());
+		this.characters = business.getAll(parametros);
 	}
 
 }

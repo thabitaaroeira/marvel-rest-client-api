@@ -1,6 +1,7 @@
 package br.com.thabita.business;
 
 import java.util.List;
+import java.util.Map;
 
 import br.com.thabita.model.Character;
 
@@ -14,6 +15,6 @@ public interface CharacterBusiness {
 
 	public void delete(int id);
 	
-	public List<Character> getAll();
+	public List<Character> getAll(Map<String, Object> parametros);
 
 }

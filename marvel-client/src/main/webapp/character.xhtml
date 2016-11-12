@@ -43,6 +43,21 @@
 		</fieldset>
 	</h:form>
 
+	<h:form id="formPesquisa">
+		<fieldset>
+			<legend>Pesquisar Personagem</legend>
+
+			<h:panelGrid>
+				<h:outputLabel value="Nome: " for="pesquisa" />
+				<h:inputText id="pesquisa"
+					value="#{characterBean.filtro.name}" />
+				<h:commandButton value="Pesquisar"
+					action="#{characterBean.pesquisar}" />
+			</h:panelGrid>
+
+		</fieldset>
+	</h:form>
+
 	<h:form id="formTabelaCharacters">
 		<h:dataTable value="#{characterBean.characters}" var="character"
 			id="tabelaCharacters">
