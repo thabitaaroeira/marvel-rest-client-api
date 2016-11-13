@@ -36,8 +36,10 @@ public class CharacterBusinessImpl extends BaseBusiness implements CharacterBusi
 		 */
 		if (character == null) {
 			Result<Character> result = super.getApi().getCharacter(id);
-			List<Character> characters = result.getData().getResults();
-			character = characters.iterator().next();
+			if (result != null && result.getData() != null) {
+				List<Character> characters = result.getData().getResults();
+				character = characters.iterator().next();
+			}
 		}
 
 		return character;

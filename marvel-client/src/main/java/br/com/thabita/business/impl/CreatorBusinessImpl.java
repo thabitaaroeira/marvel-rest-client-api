@@ -36,8 +36,10 @@ public class CreatorBusinessImpl extends BaseBusiness implements CreatorBusiness
 		 */
 		if (creator == null) {
 			Result<Creator> result = super.getApi().getCreator(id);
-			List<Creator> results = result.getData().getResults();
-			creator = results.iterator().next();
+			if (result != null && result.getData() != null) {
+				List<Creator> results = result.getData().getResults();
+				creator = results.iterator().next();
+			}
 		}
 
 		return creator;

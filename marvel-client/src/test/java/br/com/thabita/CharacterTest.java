@@ -149,8 +149,9 @@ public class CharacterTest extends BaseTest {
 		restTemplate.delete(uri);
 
 		ResponseEntity<Character> entity = restTemplate.getForEntity(uri, Character.class);
+		Character character = entity.getBody();
 		logger.debug(entity.toString());
-		Assert.assertNull(entity.getBody().getId());
+		Assert.assertNull(character);
 	}
 
 	@Test
