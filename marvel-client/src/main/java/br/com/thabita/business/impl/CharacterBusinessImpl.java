@@ -28,7 +28,19 @@ public class CharacterBusinessImpl extends BaseBusiness implements CharacterBusi
 
 	@Override
 	public Character read(Integer id) {
-		return banco.get(id);
+		Character character = banco.get(id);
+
+		/**
+		 * Se o personagem nao foi encontrado no banco local, repassa a chamada
+		 * a api da marvel.
+		 */
+		if (character == null) {
+			Result<Character> result = super.getApi().getCharacter(id);
+			List<Character> characters = result.getData().getResults();
+			character = characters.iterator().next();
+		}
+
+		return character;
 	}
 
 	@Override
@@ -52,4 +64,5 @@ public class CharacterBusinessImpl extends BaseBusiness implements CharacterBusi
 		}
 		return new ArrayList<Character>(banco.values());
 	}
+
 }

@@ -1,4 +1,4 @@
-package br.com.thabita.resource;
+package br.com.thabita.controllers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -31,17 +30,12 @@ import br.com.thabita.model.constants.Parametro;
 @Produces(MediaType.APPLICATION_JSON)
 public class CharacterController {
 
+	private static final int DEFAULT_LIMIT = 10;
+
 	private static Logger logger = LogManager.getLogger(CharacterController.class);
 
 	@Autowired
 	private CharacterBusiness business;
-
-	// @GET
-	// public List<Character> getAll() {
-	// List<Character> characters = business.getAll(null);
-	// logger.debug("> getAll = " + characters.toString());
-	// return characters;
-	// }
 
 	@Path("{id}")
 	@GET
@@ -52,25 +46,28 @@ public class CharacterController {
 	}
 
 	@GET
-	public List<Character> getAll(@QueryParam("name") String nome,
-			@DefaultValue("id") @QueryParam("orderBy") String orderBy) {
-		Map<String, Object> params = createParameters(nome, orderBy);
-		logger.debug("> getAll params " + params.toString());
+	public List<Character> getAll(@QueryParam("name") String name, @QueryParam("nameStartsWith") String nameStartsWith,
+			@QueryParam("orderBy") String orderBy) {
+		Map<String, Object> params = createParameters(name, nameStartsWith, orderBy);
+		logger.debug("> getAll params = " + params.toString());
 
 		List<Character> characters = business.getAll(params);
 		logger.debug("> getAll result = " + characters.toString());
 		return characters;
 	}
 
-	public Map<String, Object> createParameters(String nome, String orderBy) {
+	public Map<String, Object> createParameters(String nome, String nameStartsWith, String orderBy) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		if (nome != null) {
 			params.put(Parametro.NAME.getName(), nome);
 		}
-		if (nome != null) {
+		if (nameStartsWith != null) {
+			params.put(Parametro.NAME_STARTS_WITH.getName(), nameStartsWith);
+		}
+		if (orderBy != null) {
 			params.put(Parametro.ORDER_BY.getName(), orderBy);
 		}
-		params.put(Parametro.LIMIT.getName(), 5);
+		params.put(Parametro.LIMIT.getName(), DEFAULT_LIMIT);
 		return params;
 	}
 

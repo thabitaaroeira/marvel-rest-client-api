@@ -1,9 +1,7 @@
 package br.com.thabita;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import br.com.thabita.model.Character;
+import br.com.thabita.model.constants.Ordenacao;
 import br.com.thabita.model.constants.Parametro;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,55 +28,102 @@ public class CharacterTest extends BaseTest {
 	@Autowired
 	private TestRestTemplate restTemplate;
 
-	private static final String URI = "/api/characters";
+	private static final String URI = URI_ROOT + "/characters";
 
 	@Test
 	public void getAll() {
-		Character[] object = restTemplate.getForObject(URI, Character[].class);
-		List<Character> characters = Arrays.asList(object);
+		// orderBy id por padrao
+		Character[] result = restTemplate.getForObject(URI, Character[].class);
+		logger.debug(result.toString());
+		List<Character> characters = Arrays.asList(result);
 		Assert.assertFalse(characters.isEmpty());
+		Character character = null;
+		for (Character c : characters) {
+			if (c.getId().equals(1017100)) {
+				character = c;
+				break;
+			}
+		}
+		// Base de dados Marvel
+		Assert.assertEquals("A-Bomb (HAS)", character.getName());
+		Assert.assertEquals("http://gateway.marvel.com/v1/public/characters/1017100", character.getResourceURI());
 	}
 
 	@Test
 	public void getById() {
+		// Base de dados Local
 		Character entidade = createCharacter();
-
-		ResponseEntity<Character> entity = restTemplate.getForEntity(getURIWithId(entidade), Character.class);
+		ResponseEntity<Character> entity = restTemplate.getForEntity(getURIWithId(entidade, URI), Character.class);
 		logger.debug(entity.toString());
 		Assert.assertTrue(entity.getStatusCode().is2xxSuccessful());
 		Assert.assertNotNull(entity.getBody().getId());
 		Assert.assertEquals(entity.getBody().getName(), entidade.getName());
+
+		// Base de dados Marvel
+		entity = restTemplate.getForEntity(URI + "/" + 1011334, Character.class);
+		logger.debug(entity.toString());
+		Assert.assertTrue(entity.getStatusCode().is2xxSuccessful());
+		entidade = entity.getBody();
+		Assert.assertTrue(entidade.getId() == 1011334);
+		Assert.assertEquals(entidade.getName(), "3-D Man");
 	}
 
-//	@Test
+	@Test
 	public void getByName() {
-		Character[] object = restTemplate.getForObject(URI, Character[].class, createParameters("Rogue", "name"));
-		List<Character> characters = Arrays.asList(object);
+		// Retorno unico
+		String name = "Rogue";
+
+		StringBuilder uri = new StringBuilder();
+		uri.append(URI);
+		uri.append("?");
+		uri.append(Parametro.NAME.getName());
+		uri.append("=");
+		uri.append(name);
+		uri.append("&");
+		uri.append(Parametro.ORDER_BY.getName());
+		uri.append("=");
+		uri.append(Ordenacao.NAME.getValue());
+
+		Character[] result = restTemplate.getForObject(uri.toString(), Character[].class);
+		List<Character> characters = Arrays.asList(result);
 		logger.debug(characters.toString());
 		Assert.assertFalse(characters.isEmpty());
-
-		boolean contains = false;
-		for (Character character : characters) {
-			if (character.getId().equals(1009546)) {
-				contains = true;
+		Character character = null;
+		for (Character chr : characters) {
+			if (chr.getName().equals(name)) {
+				character = chr;
+				break;
 			}
 		}
-		Assert.assertTrue(contains);
-	}
+		Assert.assertNotNull(character);
+		Assert.assertTrue(character.getId().equals(1009546));
+		Assert.assertEquals(name, character.getName());
 
-	public Map<String, Object> createParameters(String nome, String orderBy) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		if (nome != null) {
-			params.put(Parametro.NAME.getName(), nome);
-		}
-		if (nome != null) {
-			params.put(Parametro.ORDER_BY.getName(), orderBy);
-		}
-		return params;
-	}
+		// Retorno em coleção
+		String nameStartsWith = "Hu"; // Hulk
+		uri = new StringBuilder();
+		uri.append(URI);
+		uri.append("?");
+		uri.append(Parametro.NAME_STARTS_WITH.getName());
+		uri.append("=");
+		uri.append(nameStartsWith);
+		uri.append("&");
+		uri.append(Parametro.ORDER_BY.getName());
+		uri.append("=");
+		uri.append(Ordenacao.NAME.getValue());
 
-	public String getURIWithId(Character entidade) {
-		return URI + "/" + entidade.getId();
+		result = restTemplate.getForObject(uri.toString(), Character[].class);
+		characters = Arrays.asList(result);
+		logger.debug(characters.toString());
+		Assert.assertFalse(characters.isEmpty());
+		character = null;
+		for (Character chr : characters) {
+			if (chr.getName().startsWith(nameStartsWith)) {
+				character = chr;
+				break;
+			}
+		}
+		Assert.assertTrue(character.getName().startsWith(nameStartsWith));
 	}
 
 	@Test
@@ -97,24 +143,25 @@ public class CharacterTest extends BaseTest {
 	public void remove() {
 		Character entidade = createCharacter();
 
-		String uri = getURIWithId(entidade);
+		String uri = getURIWithId(entidade, URI);
 		logger.debug(uri);
-		
+
 		restTemplate.delete(uri);
 
 		ResponseEntity<Character> entity = restTemplate.getForEntity(uri, Character.class);
 		logger.debug(entity.toString());
-		Assert.assertNull(entity.getBody());
+		Assert.assertNull(entity.getBody().getId());
 	}
 
 	@Test
 	public void update() {
 		Character entidade = createCharacter();
 
+		String uri = getURIWithId(entidade, URI);
 		entidade.setDescription("Nova Descricao");
-		restTemplate.put(getURIWithId(entidade), entidade);
+		restTemplate.put(uri, entidade);
 
-		ResponseEntity<Character> entity = restTemplate.getForEntity(getURIWithId(entidade), Character.class);
+		ResponseEntity<Character> entity = restTemplate.getForEntity(uri, Character.class);
 		logger.debug(entity.toString());
 		Assert.assertNotNull(entity.getBody());
 		Assert.assertEquals(entidade.getDescription(), entity.getBody().getDescription());

@@ -3,7 +3,7 @@ package br.com.thabita.model;
 import java.util.Date;
 
 /**
- * Base Entity for the resources provided by the API.
+ * Entidade-base para as resources retornadas pela API Marvel.
  */
 public abstract class BaseEntity {
 

@@ -28,7 +28,19 @@ public class CreatorBusinessImpl extends BaseBusiness implements CreatorBusiness
 
 	@Override
 	public Creator read(Integer id) {
-		return banco.get(id);
+		Creator creator = banco.get(id);
+
+		/**
+		 * Se o criador nao foi encontrado no banco local, repassa a chamada a
+		 * api da marvel.
+		 */
+		if (creator == null) {
+			Result<Creator> result = super.getApi().getCreator(id);
+			List<Creator> results = result.getData().getResults();
+			creator = results.iterator().next();
+		}
+
+		return creator;
 	}
 
 	@Override
@@ -44,8 +56,7 @@ public class CreatorBusinessImpl extends BaseBusiness implements CreatorBusiness
 
 	@Override
 	public List<Creator> getAll(Map<String, Object> parametros) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		Result<Creator> result = super.getApi().getCreators(params);
+		Result<Creator> result = super.getApi().getCreators(parametros);
 		List<Creator> creators = result.getData().getResults();
 
 		for (Creator creator : creators) {

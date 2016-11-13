@@ -3,21 +3,18 @@ package br.com.thabita.model;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * <p>
- * Result of the API request.
- * </p>
- * <p>
+ * Representação de resultado da requisição a API Marvel.<br/>
+ * <br/>
+ * Os resultados retornados pelos endpoints da API tem um formato em comum,
+ * independente do tipo de entidade que o endpoint retorna.<br/>
+ * Toda chamada de sucesso retornará um objeto encapsulador, que contém
+ * metadados sobre a chamada e um objeto-contêiner, que exibe a informação de
+ * paginação e um array dos resultados retornados pela chamada.<br/>
+ * Este padrão é consistente mesmo que seja requisitado um único objeto.<br/>
+ * <br/>
+ * Segundo documentação oficial: <br/>
  * Results returned by the API endpoints have the same general format, no matter
  * which entity type the endpoint returns.
- * </p>
- * <p>
- * Every successful call will return a wrapper object, which contains metadata
- * about the call and a container object, which displays pagination information
- * and an array of the results returned by this call.
- * </p>
- * <p>
- * This pattern is consistent even if you are requesting a single object.
- * </p>
  */
 @XmlRootElement
 public class Result<T> {

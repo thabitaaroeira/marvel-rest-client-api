@@ -1,20 +1,24 @@
 package br.com.thabita.model;
 
 /**
- * Summary type used for Stories and Series.
+ * Tipo de Sumário utilizado por Stories e Series (Histórias e Séries). Segundo
+ * documentação oficial: <br/>
+ * Some summary representations will additionally have a field describing its
+ * type or the relationship between the returned entity and the referenced
+ * entity.
  */
-public class TypeSummary extends Summary{
+public class TypeSummary extends Summary {
 
-    /**
-     * Type of the summary
-     */
-    private String type;
+	/**
+	 * Tipo do sumário
+	 */
+	private String type;
 
-    public String getType() {
-        return type;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 }
