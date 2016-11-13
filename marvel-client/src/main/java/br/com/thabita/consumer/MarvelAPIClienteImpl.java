@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -19,7 +18,6 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.codec.CharEncoding;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -34,10 +32,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
+import br.com.thabita.model.BaseEntity;
 import br.com.thabita.model.Character;
-import br.com.thabita.model.Comic;
 import br.com.thabita.model.Creator;
-import br.com.thabita.util.BaseEntidade;
+import br.com.thabita.model.Result;
 
 /**
  * Implementa a interface MarvelAPICliente
@@ -46,7 +44,6 @@ public class MarvelAPIClienteImpl implements MarvelAPICliente {
 
 	private static Logger logger = LogManager.getLogger(MarvelAPIClienteImpl.class);
 
-	public static final String COMICS = "comics";
 	public static final String CHARACTERS = "characters";
 	public static final String CREATORS = "creators";
 	private static final String baseUrl = "http://gateway.marvel.com";
@@ -87,61 +84,25 @@ public class MarvelAPIClienteImpl implements MarvelAPICliente {
 	}
 
 	@Override
-	public List<Comic> getComic(Integer comicId) {
-		Response response = executeRequest(COMICS, comicId.toString());
-		return getComicResponse(response);
-	}
-
-	@Override
-	public List<Character> getComicCharacters(Integer comicId, Map<String, Object> queryParams) {
-		Response response = executeRequest(COMICS, comicId, CHARACTERS, queryParams);
-		return getCharacterResponse(response);
-	}
-
-	@Override
-	public List<Creator> getComicCreators(Integer comicId, Map<String, Object> queryParams) {
-		Response response = executeRequest(COMICS, comicId, CREATORS, queryParams);
-		return getCreatorResponse(response);
-	}
-
-	@Override
-	public List<Character> getCharacter(Integer characterId) {
+	public Result<Character> getCharacter(Integer characterId) {
 		Response response = executeRequest(CHARACTERS, characterId.toString());
 		return getCharacterResponse(response);
 	}
 
 	@Override
-	public List<Comic> getCharacterComics(Integer characterId, Map<String, Object> queryParams) {
-		Response response = executeRequest(CHARACTERS, characterId, COMICS, queryParams);
-		return getComicResponse(response);
-	}
-
-	@Override
-	public List<Creator> getCreator(Integer creatorId) {
+	public Result<Creator> getCreator(Integer creatorId) {
 		Response response = executeRequest(CREATORS, creatorId.toString());
 		return getCreatorResponse(response);
 	}
 
 	@Override
-	public List<Comic> getCreatorComics(Integer creatorId, Map<String, Object> queryParams) {
-		Response response = executeRequest(CREATORS, creatorId, COMICS, queryParams);
-		return getComicResponse(response);
-	}
-
-	@Override
-	public List<Comic> getComics(Map<String, Object> queryParams) {
-		Response response = executeRequest(COMICS, queryParams);
-		return getComicResponse(response);
-	}
-
-	@Override
-	public List<Character> getCharacters(Map<String, Object> queryParams) {
+	public Result<Character> getCharacters(Map<String, Object> queryParams) {
 		Response response = executeRequest(CHARACTERS, queryParams);
 		return getCharacterResponse(response);
 	}
 
 	@Override
-	public List<Creator> getCreators(Map<String, Object> queryParams) {
+	public Result<Creator> getCreators(Map<String, Object> queryParams) {
 		Response response = executeRequest(CREATORS, queryParams);
 		return getCreatorResponse(response);
 	}
@@ -152,72 +113,42 @@ public class MarvelAPIClienteImpl implements MarvelAPICliente {
 		return response;
 	}
 
-	private Response executeRequest(String resource, Integer id, String subPath, Map<String, Object> queryParams) {
-		WebTarget baseRequest = buildBaseRequest(resource, queryParams);
-		Response response = baseRequest.path(id.toString()).path(subPath).request(MediaType.APPLICATION_JSON_TYPE)
-				.get(Response.class);
-		return response;
-	}
-
 	private Response executeRequest(String resource, Map<String, Object> queryParams) {
 		WebTarget baseRequest = buildBaseRequest(resource, queryParams);
 		Response response = baseRequest.request(MediaType.APPLICATION_JSON_TYPE).get(Response.class);
 		return response;
 	}
 
-	/**
-	 * Constroi um Request base pro resource especificado, e adiciona as query
-	 * params.
-	 * 
-	 * @param resource
-	 * @param queryParams
-	 * @return WebTarget
-	 */
 	private WebTarget buildBaseRequest(String resource, Map<String, Object> queryParams) {
-		Long currentTime = System.currentTimeMillis();
-
-		byte[] hash = DigestUtils.md5(currentTime + getPrivateKey().toString() + getPublicKey().toString());
-
-		final String hashes = new String(Hex.encodeHex(hash));
-
+		Long currentTime = new Date().getTime();
+		byte[] hash = org.apache.commons.codec.digest.DigestUtils
+				.md5(currentTime + getPrivateKey().toString() + getPublicKey().toString());
+		final String result = new String(Hex.encodeHex(hash));
 		WebTarget baseRequest = baseTarget.path(version).path("public").path(resource).queryParam("ts", currentTime)
-				.queryParam("apikey", publicKey).queryParam("hash", hashes);
-
+				.queryParam("apikey", publicKey).queryParam("hash", result);
 		if (queryParams != null) {
-
 			for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
-
 				try {
 					baseRequest = baseRequest.queryParam(entry.getKey(), encoder.encode(entry.getValue().toString()));
-
 				} catch (EncoderException e) {
-					throw new RuntimeException("Nao foi possivel codificar o valor do parametro: " + entry.getValue(),
-							e);
+					throw new RuntimeException("Could not encode query parameter value: " + entry.getValue(), e);
 				}
 			}
 		}
 		return baseRequest;
 	}
 
-	private List<Character> getCharacterResponse(Response response) {
-		Type collectionType = new TypeToken<List<Character>>() {
-		}.getType();
-		return getResponseWithToken(response, collectionType);
+	private Result<Character> getCharacterResponse(Response response) {
+		return getResponseWithToken(response, new TypeToken<Result<Character>>() {
+		}.getType());
 	}
 
-	private List<Comic> getComicResponse(Response response) {
-		Type collectionType = new TypeToken<List<Comic>>() {
-		}.getType();
-		return getResponseWithToken(response, collectionType);
+	private Result<Creator> getCreatorResponse(Response response) {
+		return getResponseWithToken(response, new TypeToken<Result<Creator>>() {
+		}.getType());
 	}
 
-	private List<Creator> getCreatorResponse(Response response) {
-		Type collectionType = new TypeToken<List<Creator>>() {
-		}.getType();
-		return getResponseWithToken(response, collectionType);
-	}
-
-	private <T extends BaseEntidade> List<T> getResponseWithToken(Response response, Type token) {
+	private <T extends BaseEntity> Result<T> getResponseWithToken(Response response, Type token) {
 		String entity = response.readEntity(String.class);
 		logger.debug(entity);
 		return gson.fromJson(entity, token);
@@ -248,5 +179,4 @@ public class MarvelAPIClienteImpl implements MarvelAPICliente {
 					+ Arrays.toString(DATE_FORMATS));
 		}
 	}
-
 }

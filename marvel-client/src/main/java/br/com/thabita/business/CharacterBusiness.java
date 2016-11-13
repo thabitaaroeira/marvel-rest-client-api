@@ -16,5 +16,5 @@ public interface CharacterBusiness {
 	public void delete(int id);
 	
 	public List<Character> getAll(Map<String, Object> parametros);
-
+	
 }

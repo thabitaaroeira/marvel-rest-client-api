@@ -1,63 +1,91 @@
 package br.com.thabita;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import java.util.Arrays;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import br.com.thabita.business.CharacterBusiness;
 import br.com.thabita.model.Character;
-import br.com.thabita.model.Comic;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = RestConfig.class)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CharacterTest extends BaseTest {
 
 	@Autowired
-	private CharacterBusiness business;
+	private TestRestTemplate restTemplate;
+
+	private static final String URI = "/api/characters";
 
 	@Test
-	public void testaAdiciona() {
-		Comic comic = buildComic();
-		Character entidade = buildCharacter();
-		entidade.setComics(Arrays.asList(comic));
-		comic.setCharacters(Arrays.asList(entidade));
-		business.create(entidade);
-
-		Character busca = business.read(entidade.getId());
-		assertEquals(entidade.getName(), busca.getName());
+	public void getAll() {
+		Character[] object = restTemplate.getForObject(URI, Character[].class);
+		List<Character> characters = Arrays.asList(object);
+		Assert.assertFalse(characters.isEmpty());
 	}
 
 	@Test
-	public void testaRemove() {
-		Character entidade = buildCharacter();
-		business.create(entidade);
+	public void getById() {
+		Character entidade = createCharacter();
 
-		business.delete(entidade.getId());
+		ResponseEntity<Character> entity = restTemplate.getForEntity(getURIWithId(entidade), Character.class);
+		Assert.assertTrue(entity.getStatusCode().is2xxSuccessful());
+		Assert.assertNotNull(entity.getBody().getId());
+		Assert.assertEquals(entity.getBody().getName(), entidade.getName());
+	}
 
-		Character busca = business.read(entidade.getId());
-		assertNull(busca);
+	public String getURIWithId(Character entidade) {
+		return URI + "/" + entidade.getId();
 	}
 
 	@Test
-	public void testaAltera() {
-		Comic comic = buildComic();
+	public void add() {
 		Character entidade = buildCharacter();
-		entidade.setComics(Arrays.asList(comic));
-		comic.setCharacters(Arrays.asList(entidade));
-		business.create(entidade);
+		ResponseEntity<Character> entity = restTemplate.postForEntity(URI, entidade, Character.class);
+		Assert.assertTrue(entity.getStatusCode().is2xxSuccessful());
+		Assert.assertNotNull(entity.getBody().getId());
+
+		Character created = entity.getBody();
+		Assert.assertNotNull(created.getId());
+		Assert.assertEquals(created.getName(), entidade.getName());
+	}
+
+	@Test
+	public void remove() {
+		Character entidade = createCharacter();
+
+		restTemplate.delete(getURIWithId(entidade), entidade);
+
+		ResponseEntity<Character> entity = restTemplate.getForEntity(getURIWithId(entidade), Character.class);
+		Assert.assertNull(entity.getBody().getId());
+	}
+
+	@Test
+	public void update() {
+		Character entidade = createCharacter();
 
 		entidade.setDescription("Nova Descricao");
-		business.update(entidade);
+		restTemplate.put(getURIWithId(entidade), entidade);
 
-		Character busca = business.read(entidade.getId());
-		assertEquals(entidade.getDescription(), busca.getDescription());
+		ResponseEntity<Character> entity = restTemplate.getForEntity(getURIWithId(entidade), Character.class);
+		Assert.assertNotNull(entity.getBody());
+		Assert.assertEquals(entidade.getDescription(), entity.getBody().getDescription());
+	}
+
+	public Character createCharacter() {
+		Character entidade = buildCharacter();
+		ResponseEntity<Character> entity = restTemplate.postForEntity(URI, entidade, Character.class);
+		Assert.assertTrue(entity.getStatusCode().is2xxSuccessful());
+		Assert.assertNotNull(entity.getBody().getId());
+		entidade = entity.getBody();
+		return entidade;
 	}
 
 }

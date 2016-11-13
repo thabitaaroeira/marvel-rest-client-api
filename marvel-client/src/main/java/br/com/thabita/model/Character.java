@@ -1,51 +1,85 @@
 package br.com.thabita.model;
 
-import java.util.List;
-
-import br.com.thabita.util.BaseEntidade;
-
 /**
- * Representacao de entidade Character
+ * Character resource representation.
  */
-public class Character extends BaseEntidade {
+public class Character extends BaseEntity{
 
-	/**
-	 * The name of the character.
-	 */
-	private String name;
+    /**
+     * The name of the character.
+     */
+    private String name;
 
-	/**
-	 * A short bio or description of the character.
-	 */
-	private String description;
+    /**
+     * A short bio or description of the character.
+     */
+    private String description;
 
-	/**
-	 * A resource list containing comics which feature this character.
-	 */
-	private List<Comic> comics;
+    /**
+     * A resource list containing comics which feature this character.
+     */
+    private ResourceList<Summary> comics;
 
-	public String getName() {
-		return name;
-	}
+    /**
+     * A resource list of stories in which this character appears.
+     */
+    private ResourceList<TypeSummary> stories;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    /**
+     * A resource list of events in which this character appears.
+     */
+    private ResourceList<Summary> events;
 
-	public String getDescription() {
-		return description;
-	}
+    /**
+     * A resource list of series in which this character appears.
+     */
+    private ResourceList<Summary> series;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public List<Comic> getComics() {
-		return comics;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setComics(List<Comic> comics) {
-		this.comics = comics;
-	}
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public ResourceList<Summary> getComics() {
+        return comics;
+    }
+
+    public void setComics(ResourceList<Summary> comics) {
+        this.comics = comics;
+    }
+
+    public ResourceList<TypeSummary> getStories() {
+        return stories;
+    }
+
+    public void setStories(ResourceList<TypeSummary> stories) {
+        this.stories = stories;
+    }
+
+    public ResourceList<Summary> getEvents() {
+        return events;
+    }
+
+    public void setEvents(ResourceList<Summary> events) {
+        this.events = events;
+    }
+
+    public ResourceList<Summary> getSeries() {
+        return series;
+    }
+
+    public void setSeries(ResourceList<Summary> series) {
+        this.series = series;
+    }
 }

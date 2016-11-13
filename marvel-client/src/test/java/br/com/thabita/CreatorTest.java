@@ -1,63 +1,91 @@
 package br.com.thabita;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import java.util.Arrays;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import br.com.thabita.business.CreatorBusiness;
-import br.com.thabita.model.Comic;
 import br.com.thabita.model.Creator;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = RestConfig.class)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class CreatorTest extends BaseTest {
 
 	@Autowired
-	private CreatorBusiness business;
+	private TestRestTemplate restTemplate;
+
+	private static final String URI = "/api/creators";
 
 	@Test
-	public void testaAdiciona() {
-		Creator entidade = buildCreator();
-		Comic comic = buildComic();
-		comic.setCreators(Arrays.asList(entidade));
-		entidade.setComics(Arrays.asList(comic));
-		business.create(entidade);
-
-		Creator busca = business.read(entidade.getId());
-		assertEquals(entidade.getFullName(), busca.getFullName());
+	public void getAll() {
+		Creator[] object = restTemplate.getForObject(URI, Creator[].class);
+		List<Creator> characters = Arrays.asList(object);
+		Assert.assertFalse(characters.isEmpty());
 	}
 
 	@Test
-	public void testaRemove() {
-		Creator entidade = buildCreator();
-		business.create(entidade);
+	public void getById() {
+		Creator entidade = createCreator();
 
-		business.delete(entidade.getId());
+		ResponseEntity<Creator> entity = restTemplate.getForEntity(getURIWithId(entidade), Creator.class);
+		Assert.assertTrue(entity.getStatusCode().is2xxSuccessful());
+		Assert.assertNotNull(entity.getBody().getId());
+		Assert.assertEquals(entity.getBody().getFullName(), entidade.getFullName());
+	}
 
-		Creator busca = business.read(entidade.getId());
-		assertNull(busca);
+	public String getURIWithId(Creator entidade) {
+		return URI + "/" + entidade.getId();
 	}
 
 	@Test
-	public void testaAltera() {
+	public void add() {
 		Creator entidade = buildCreator();
-		Comic comic = buildComic();
-		comic.setCreators(Arrays.asList(entidade));
-		entidade.setComics(Arrays.asList(comic));
-		business.create(entidade);
+		ResponseEntity<Creator> entity = restTemplate.postForEntity(URI, entidade, Creator.class);
+		Assert.assertTrue(entity.getStatusCode().is2xxSuccessful());
+		Assert.assertNotNull(entity.getBody().getId());
 
-		entidade.setFullName("Nova Descricao");
-		business.update(entidade);
+		Creator created = entity.getBody();
+		Assert.assertNotNull(created.getId());
+		Assert.assertEquals(created.getFullName(), entidade.getFullName());
+	}
 
-		Creator busca = business.read(entidade.getId());
-		assertEquals("Nova Descricao", busca.getFullName());
+	@Test
+	public void remove() {
+		Creator entidade = createCreator();
+
+		restTemplate.delete(getURIWithId(entidade), entidade);
+
+		ResponseEntity<Creator> entity = restTemplate.getForEntity(getURIWithId(entidade), Creator.class);
+		Assert.assertNull(entity.getBody().getId());
+	}
+
+	@Test
+	public void update() {
+		Creator entidade = createCreator();
+
+		entidade.setLastName("Novossobrenome");
+		restTemplate.put(getURIWithId(entidade), entidade);
+
+		ResponseEntity<Creator> entity = restTemplate.getForEntity(getURIWithId(entidade), Creator.class);
+		Assert.assertNotNull(entity.getBody());
+		Assert.assertEquals(entidade.getFullName(), entity.getBody().getFullName());
+	}
+
+	public Creator createCreator() {
+		Creator entidade = buildCreator();
+		ResponseEntity<Creator> entity = restTemplate.postForEntity(URI, entidade, Creator.class);
+		Assert.assertTrue(entity.getStatusCode().is2xxSuccessful());
+		Assert.assertNotNull(entity.getBody().getId());
+		entidade = entity.getBody();
+		return entidade;
 	}
 
 }

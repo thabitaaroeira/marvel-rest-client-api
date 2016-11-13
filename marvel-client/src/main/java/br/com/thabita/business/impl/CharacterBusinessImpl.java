@@ -7,11 +7,10 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import br.com.thabita.business.CharacterBusiness;
 import br.com.thabita.model.Character;
-import br.com.thabita.model.Comic;
+import br.com.thabita.model.Result;
 
 @Component
 public class CharacterBusinessImpl extends BaseBusiness implements CharacterBusiness {
@@ -45,16 +44,11 @@ public class CharacterBusinessImpl extends BaseBusiness implements CharacterBusi
 
 	@Override
 	public List<Character> getAll(Map<String, Object> parametros) {
-		if (!CollectionUtils.isEmpty(parametros)) {
-			List<Character> characters = super.getApi().getCharacters(parametros);
+		Result<Character> result = super.getApi().getCharacters(parametros);
+		List<Character> characters = result.getData().getResults();
 
-			for (Character character : characters) {
-				List<Comic> comics = super.getApi().getCharacterComics(character.getId(), parametros);
-
-				character.setComics(comics);
-
-				banco.put(character.getId(), character);
-			}
+		for (Character character : characters) {
+			banco.put(character.getId(), character);
 		}
 		return new ArrayList<Character>(banco.values());
 	}

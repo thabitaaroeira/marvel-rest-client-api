@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.stereotype.Component;
 
 import br.com.thabita.business.CreatorBusiness;
-import br.com.thabita.model.Comic;
 import br.com.thabita.model.Creator;
+import br.com.thabita.model.Result;
 
 @Component
 public class CreatorBusinessImpl extends BaseBusiness implements CreatorBusiness {
@@ -19,10 +19,11 @@ public class CreatorBusinessImpl extends BaseBusiness implements CreatorBusiness
 	private static AtomicInteger contador = new AtomicInteger(1);
 
 	@Override
-	public void create(Creator comic) {
+	public Creator create(Creator creator) {
 		int id = contador.incrementAndGet();
-		comic.setId(id);
-		banco.put(id, comic);
+		creator.setId(id);
+		banco.put(id, creator);
+		return creator;
 	}
 
 	@Override
@@ -31,8 +32,9 @@ public class CreatorBusinessImpl extends BaseBusiness implements CreatorBusiness
 	}
 
 	@Override
-	public void update(Creator creator) {
+	public Creator update(Creator creator) {
 		banco.put(creator.getId(), creator);
+		return creator;
 	}
 
 	@Override
@@ -41,15 +43,12 @@ public class CreatorBusinessImpl extends BaseBusiness implements CreatorBusiness
 	}
 
 	@Override
-	public List<Creator> getAll() {
+	public List<Creator> getAll(Map<String, Object> parametros) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		List<Creator> creators = super.getApi().getCreators(params);
+		Result<Creator> result = super.getApi().getCreators(params);
+		List<Creator> creators = result.getData().getResults();
 
 		for (Creator creator : creators) {
-			params = new HashMap<String, Object>();
-			List<Comic> comics = super.getApi().getCreatorComics(creator.getId(), params);
-			creator.setComics(comics);
-			
 			banco.put(creator.getId(), creator);
 		}
 
