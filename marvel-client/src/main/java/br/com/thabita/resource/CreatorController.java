@@ -42,7 +42,7 @@ public class CreatorController {
 	@GET
 	public Creator get(@PathParam("id") int id) {
 		Creator creator = business.read(id);
-		logger.debug("> get/" + id + " = " + creator.toString());
+		logger.debug("> get/" + id + " = " + creator);
 		return creator;
 	}
 

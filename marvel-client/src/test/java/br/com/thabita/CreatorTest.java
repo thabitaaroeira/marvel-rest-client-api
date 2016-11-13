@@ -64,7 +64,7 @@ public class CreatorTest extends BaseTest {
 		restTemplate.delete(getURIWithId(entidade), entidade);
 
 		ResponseEntity<Creator> entity = restTemplate.getForEntity(getURIWithId(entidade), Creator.class);
-		Assert.assertNull(entity.getBody().getId());
+		Assert.assertNull(entity.getBody());
 	}
 
 	@Test
